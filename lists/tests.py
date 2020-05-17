@@ -5,9 +5,14 @@
 # 4. Rerun FT test, repeat 2-3 if failing. 
 
 from django.test import TestCase
+from django.urls import resolve
+from lists.views import home_page 
 
-class SmokeTest(TestCase):
+class HomePageTest(TestCase):
 
-    def test_test_runner(self):
-        self.assertEqual(1+1, 3)
+    def test_home_resolver(self):
+        # resolve() returns a ResolverMatch object if matched, func returns the function to be called
+        # hence the test is defining the following API: GET http://localhost:<PORT#>/ <-> home_page() 
+        found = resolve('/')
+        self.assertEqual(found.func, home_page)
 
