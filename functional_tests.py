@@ -32,12 +32,14 @@ class NewVisitorTest(unittest.TestCase):
 		time.sleep(1)
 
 		list = self.browser.find_element_by_id('list_general')
-		self.assertIn("1. meditate for 20min", list.find_element_by_tag_name("li"))
+		list_items = list.find_elements_by_tag_name("li")
+		self.assertIn("meditate for 20min", [item.text for item in list_items])
 
-		# The inputbox is still there. He adds another item which reads "Clean gutters"
-		self.fail("END")
+		# The inputbox is still there. He adds another item which reads "clean gutters"
 
 		# The page updates again showing the two items
+
+		self.fail("END")
 
 if __name__ == "__main__":
 	unittest.main()

@@ -22,6 +22,6 @@ class HomePageTest(TestCase):
 
 
     def test_POST_request(self):
-        response = self.client.post('/', data={'item_text': 'Meditate for 20min'})
+        response = self.client.post('/', data={'item_text': 'meditate for 20min'})
 
-        self.assertIn('Meditate for 20min', response.content.decode())
+        self.assertIn('meditate for 20min', response.content.decode())
