@@ -13,20 +13,21 @@ from lists.views import home_page
 
 class HomePageTest(TestCase):
 
-    def test_home_resolver(self):
-        # resolve() returns a ResolverMatch object if matched, func returns the function to be called
-        # hence the test is defining the following API: GET <BaseURL>/ <-> home_page() 
-        found = resolve('/')
-        self.assertEqual(found.func, home_page)
+    def test_home_template_used(self):
+        # Test client is created for each test, which is accessed via the TestCase class, as oposed to client = Client() for each test
 
-    def test_home_response(self):
-        # test that home_page() returns the appropriate HTML content
+        response = self.client.get('/')
 
-        request = HttpRequest()
-        response = home_page(request)
-        content = response.content.decode("utf8")
+        self.assertTemplateUsed(response, 'base.html')
 
-        self.assertTrue(content.startswith('<html>'))
-        self.assertIn('<h1> Test </h1>', content)
-        self.assertTrue(content.endswith('</html>'))
 
+;lsdk aslk dsa;ldkaks;ldk ;as;dlk a;lsk d;lka;sk d;lkas;lkd;alk; lkdl;ask d;lkas;l d;lask  aks dlaksjd jl ajsd lasd
+a sdasdasd
+asd
+asd adas
+d 
+sa
+ das 
+ das dasd 
+ as da asdasjdlajs ldkjasl kdjlajslk dlaksjd lkjaslkdj kajsdkjaskljd lajlkjdla jsd lkjal djlajs dljasl jda s
+ 
