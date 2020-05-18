@@ -21,13 +21,7 @@ class HomePageTest(TestCase):
         self.assertTemplateUsed(response, 'base.html')
 
 
-;lsdk aslk dsa;ldkaks;ldk ;as;dlk a;lsk d;lka;sk d;lkas;lkd;alk; lkdl;ask d;lkas;l d;lask  aks dlaksjd jl ajsd lasd
-a sdasdasd
-asd
-asd adas
-d 
-sa
- das 
- das dasd 
- as da asdasjdlajs ldkjasl kdjlajslk dlaksjd lkjaslkdj kajsdkjaskljd lajlkjdla jsd lkjal djlajs dljasl jda s
- 
+    def test_POST_request(self):
+        response = self.client.post('/', data={'item_text': 'Meditate for 20min'})
+
+        self.assertIn('Meditate for 20min', response.content.decode())

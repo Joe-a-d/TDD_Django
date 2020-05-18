@@ -10,9 +10,14 @@
     <body>
         <h1> To-Do lists </h1>
 
-		<form>
-		<input id='new_item' placeholder='Add a task'></input>
+		<form method="POST">
+		<input id='new_item' name= "item_text" placeholder='Add a task'></input>
+			{% csrf_token %}
 		</form>
+
+		<ol id="list_general">
+
+		</ol>
 
 
     </body>

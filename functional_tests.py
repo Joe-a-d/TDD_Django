@@ -32,7 +32,7 @@ class NewVisitorTest(unittest.TestCase):
 		time.sleep(1)
 
 		list = self.browser.find_element_by_id('list_general')
-		self.assertIn("1. meditate for 20min", list.find_element_by_xpath("/ol/li"))
+		self.assertIn("1. meditate for 20min", list.find_element_by_tag_name("li"))
 
 		# The inputbox is still there. He adds another item which reads "Clean gutters"
 		self.fail("END")
