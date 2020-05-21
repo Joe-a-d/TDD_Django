@@ -16,7 +16,9 @@
 		</form>
 
 		<ol id="list_general">
-				<li> {{ list_item }} </li>
+            {% for item in items %}
+				<li> {{ item.text }} </li>
+            {% endfor %}
 		</ol>
 
 

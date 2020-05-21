@@ -1,7 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import WebDriverException
 from django.test import LiveServerTestCase
 import time
+
+MAX_WAIT = 10
 
 class NewVisitorTest(LiveServerTestCase):
 
@@ -16,13 +19,22 @@ class NewVisitorTest(LiveServerTestCase):
 	# helpers
 
 	def check_li_created(self, item_text):
-		list = self.browser.find_element_by_id('list_general')
-		list_items = list.find_elements_by_tag_name("li")
-		self.assertIn(item_text, [item.text for item in list_items])
+		# for long loads keep trying and execute until up to 10s
+		start_time = time.time()
+		while True:
+			try:
+				list = self.browser.find_element_by_id('list_general')
+				list_items = list.find_elements_by_tag_name("li")
+				self.assertIn(item_text, [item.text for item in list_items])
+				return
+			except (AssertionError, WebDriverException) as e:
+				if time.time() - start_time > MAX_WAIT:
+					raise e
+				time.sleep(0.5)
 
 	def test_create_and_get_list(self):
 		# Mike access the homepage
-		self.browser.get("http://127.0.0.1:8000")
+		self.browser.get(self.live_server_url)
 
 		# He notices that the tab and the page's header mention to-do lists
 		self.assertIn("To-Do", self.browser.title)
