@@ -83,20 +83,20 @@ class NewVisitorTest(LiveServerTestCase):
         # loretta logins in from her laptop 
 
         ## new session
-        self.broser.quit()
+        self.browser.quit()
         self.browser = webdriver.Chrome()
-        self.broser.get(self.live_server_url)
+        self.browser.get(self.live_server_url)
 
         # and can't see Mike's list
         body = self.browser.find_element_by_tag_name('body')
-        self.assertNotIn('meditate for 20min', body)
-        self.assertNotIn('clean gutters', body)
+        self.assertNotIn('meditate for 20min', body.text)
+        self.assertNotIn('clean gutters', body.text)
 
         # loretta starts a new list and adds 'buy milk' to it
 
         inputbox = self.browser.find_element_by_id('new_item')
         inputbox.send_keys('buy milk')
-        inputbox.send.keys(Keys.ENTER)
+        inputbox.send_keys(Keys.ENTER)
         self.check_li_created('buy milk')
 
         # she gets the unique url which links to ther list

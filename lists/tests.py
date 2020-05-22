@@ -39,22 +39,31 @@ class HomePageTest(TestCase):
 
         # check response for redirect
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/')
+        self.assertEqual(response['location'], '/lists/shared')
 
 
     def test_save_only_onEnter(self):
         self.client.get('/')
         self.assertEqual(Item.objects.count(), 0)
 
-    def test_list_display_all(self):
 
-        Item.objects.create(text="First")
-        Item.objects.create(text="Second")
 
-        response = self.client.get('/')
+class ListViewTest(TestCase):
 
-        self.assertIn("First", response.content.decode())
-        self.assertIn("Second", response.content.decode())
+    def test_display_list_template_used(self):
+
+        response = self.client.get('/lists/shared/')
+
+        self.assertTemplateUsed(response, 'display_list.html')
+
+    def test_display_all_items(self):
+        Item.objects.create(text = "item1")
+        Item.objects.create(text = "item2")
+
+        response = self.client.get('/lists/shared/')
+
+        self.assertContains(response, "item1")
+        self.assertContains(response, "item2")
 
 
 
