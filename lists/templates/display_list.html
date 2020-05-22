@@ -1,10 +1,25 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>To-Do</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>  
+    <body>
+        <h1> Start a new To-Do list </h1>
 
+		<form method="POST" action="/lists/new">
+        <input id='new_item' name="item_text" placeholder='Add a task'></input>
+            {% csrf_token %}
+        </form>
 
-
-		<ol id="list_general">
+        <ol id="list_general">
             {% for item in items %}
-				<li> {{ item.text }} </li>
+                <li> {{ item.text }} </li>
             {% endfor %}
-		</ol>
+        </ol>
 
-
+    </body>
+</html>
