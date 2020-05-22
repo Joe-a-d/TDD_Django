@@ -10,7 +10,7 @@
     <body>
         <h1> Start a new To-Do list </h1>
 
-		<form method="POST" action="/lists/new">
+		<form method="POST" action="/lists/{{ list.id }}/save_to">
         <input id='new_item' name="item_text" placeholder='Add a task'></input>
             {% csrf_token %}
         </form>

@@ -1,16 +1,18 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 from django.test import LiveServerTestCase
 import time
 
-MAX_WAIT = 10
+MAX_WAIT = 3
 
 class NewVisitorTest(LiveServerTestCase):
-
+    options = Options()
+    options.add_argument('--headless');
 
     def setUp(self):
-        self.browser = webdriver.Chrome()
+        self.browser = webdriver.Chrome(options=self.options)
 
     def tearDown(self):
         self.browser.quit()
@@ -84,7 +86,7 @@ class NewVisitorTest(LiveServerTestCase):
 
         ## new session
         self.browser.quit()
-        self.browser = webdriver.Chrome()
+        self.browser = webdriver.Chrome(options=self.options)
         self.browser.get(self.live_server_url)
 
         # and can't see Mike's list

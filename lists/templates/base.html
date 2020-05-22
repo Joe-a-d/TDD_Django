@@ -10,10 +10,10 @@
     <body>
         <h1> To-Do lists </h1>
 
-		<form method="POST" action="/">
-		<input id='new_item' name="item_text" placeholder='Add a task'></input>
-			{% csrf_token %}
-		</form>
+		<form method="POST" action="/lists/new">
+        <input id='new_item' name="item_text" placeholder='Add a task'></input>
+            {% csrf_token %}
+        </form>
 
         <ol id="list_general">
             {% for item in items %}

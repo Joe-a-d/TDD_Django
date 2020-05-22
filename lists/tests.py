@@ -24,8 +24,7 @@ class HomePageTest(TestCase):
 class NewListTest(TestCase):
 
 	def test_POST_save(self):
-		response = self.client.post('/lists/new', data={'item_text': 'meditate for 20min'})
-
+		response = self.client.post('/lists/new', data={'item_text': 'meditate for 20min', })
 
 		# check that item has been saved
 		self.assertEqual(Item.objects.count(), 1)
@@ -38,27 +37,89 @@ class NewListTest(TestCase):
 	def test_POST_redirect(self):
 
 		response = self.client.post('/lists/new', data={'item_text': 'meditate for 20min'})
-
+		new_list = List.objects.first()
 		# check response for redirect
-		self.assertRedirects(response, '/lists/shared/')
+		self.assertRedirects(response, f'/lists/{new_list.id}/')
 
 
 class ListViewTest(TestCase):
 
 	def test_display_list_template_used(self):
-
-		response = self.client.get('/lists/shared/')
+		list_ = List.objects.create()
+		response = self.client.get(f'/lists/{list_.id}/')
 
 		self.assertTemplateUsed(response, 'display_list.html')
 
 	def test_display_all_items(self):
-		Item.objects.create(text = "item1")
-		Item.objects.create(text = "item2")
+		list_ = List.objects.create()
+		wrong_list = List.objects.create()
 
-		response = self.client.get('/lists/shared/')
+		Item.objects.create(text = "item1", list=list_)
+		Item.objects.create(text = "item2", list=list_)
+		Item.objects.create(text = "item21", list=wrong_list)
+		Item.objects.create(text = "item22", list=wrong_list)
+
+
+		response = self.client.get(f'/lists/{list_.id}/')
 
 		self.assertContains(response, "item1")
 		self.assertContains(response, "item2")
+		self.assertNotContains(response, "item21")
+		self.assertNotContains(response, "item22")
+
+
+# class NewItemTest(TestCase):
+
+# 	# def test_save_to_existing_list(self):
+# 	# 	list_ = List.objects.create()
+# 	# 	wrong_list = List.objects.create()
+
+# 	# 	self.client.post(f'/lists/{list_.id}/save_to', data={'item_text':'existing'})
+
+# 	# 	self.assertEqual(Item.objects.count(),1)
+# 	# 	new_item = Item.objects.first()
+# 	# 	self.assertEqual(new_item.text ,'existing')
+# 	# 	self.assertEqual(new_item.list , list_)
+
+# 	def test_redirects_to_list_view(self):
+# 		list_ = List.objects.create()
+# 		wrong_list = List.objects.create()
+
+# 		response = self.client.post('/lists/1/add_item',
+#             data={'item_text': 'A new item for an existing list'}
+#         )
+# 		self.assertRedirects(response, '/lists/1/')
+
+class NewItemTest(TestCase):
+
+	def test_can_save_a_POST_request_to_an_existing_list(self):
+		list_ = List.objects.create()
+		wrong_list = List.objects.create()
+
+		self.client.post(f'/lists/{list_.id}/save_to',data={'item_text': 'existing'})
+		self.assertEqual(Item.objects.count(), 1)
+		new_item = Item.objects.first()
+		self.assertEqual(new_item.text, 'existing')
+		self.assertEqual(new_item.list, list_)
+
+
+	def test_redirects_to_list_view(self):
+		wrong_list = List.objects.create()
+		list_ = List.objects.create()
+
+		response = self.client.post(f'/lists/{list_.id}/save_to',data={'item_text': 'existing'})
+		self.assertRedirects(response, f'/lists/{list_.id}/')
+
+	def test_context_list(self):
+		list_ = List.objects.create()
+		wrong_list = List.objects.create()
+
+		response = self.client.get(f'/lists/{list_.id}/')
+		self.assertEqual(response.context['list'], list_)
+
+
+
+
 
 
 
